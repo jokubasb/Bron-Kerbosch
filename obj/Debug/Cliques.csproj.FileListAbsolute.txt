@@ -1,0 +1,7 @@
+C:\Users\Jokubas\Documents\VU\Algoritmu analize\Cliques\bin\Debug\Cliques.exe.config
+C:\Users\Jokubas\Documents\VU\Algoritmu analize\Cliques\bin\Debug\Cliques.exe
+C:\Users\Jokubas\Documents\VU\Algoritmu analize\Cliques\bin\Debug\Cliques.pdb
+C:\Users\Jokubas\Documents\VU\Algoritmu analize\Cliques\obj\Debug\Cliques.csprojAssemblyReference.cache
+C:\Users\Jokubas\Documents\VU\Algoritmu analize\Cliques\obj\Debug\Cliques.csproj.CoreCompileInputs.cache
+C:\Users\Jokubas\Documents\VU\Algoritmu analize\Cliques\obj\Debug\Cliques.exe
+C:\Users\Jokubas\Documents\VU\Algoritmu analize\Cliques\obj\Debug\Cliques.pdb
