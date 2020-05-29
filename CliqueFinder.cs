@@ -11,11 +11,12 @@ class Clique
     static int v;
     static int[,] edges;
 
-    static int findCliques(List<int> R, List<int> P, List<int> X)
+    static int findCliques(List<int> R, List<int> P, List<int> X, bool print)
     {
         if (P.Count == 0 && X.Count == 0)
         {
-            Console.WriteLine("Clique found: " + String.Join(",", R));
+            if(print)
+                Console.WriteLine("Clique found: " + String.Join(",", R));
             return 1;
         }
         int found = 0;
@@ -26,7 +27,7 @@ class Clique
             var new_P = new List<int>(P.Intersect(N).ToList());
             var new_X = new List<int>(X.Intersect(N).ToList());
             new_R.Add(v);
-            found += findCliques(new_R, new_P, new_X);
+            found += findCliques(new_R, new_P, new_X, print);
             P.Remove(v);
             X.Add(v);
         }
@@ -57,8 +58,6 @@ class Clique
             v = Int32.Parse(tokens[0]);
             e = Int32.Parse(tokens[1]);
             int[,] edges = new int[e, 2];
-
-            //Console.WriteLine("Grafas su " + v + " viršūnėmis ir " + e + " briaunomis");
              
             while ((line = sr.ReadLine()) != null)
             {
@@ -87,23 +86,9 @@ class Clique
         {
             edges[i, i] = 0;
         }
-
-        /*
-        int rowLength = edges.GetLength(0);
-        int colLength = edges.GetLength(1);
-
-        for (int i = 0; i < rowLength; i++)
-        {
-            for (int j = 0; j < colLength; j++)
-            {
-                Console.Write(string.Format("{0} ", edges[i, j]));
-            }
-            Console.Write(Environment.NewLine + Environment.NewLine);
-        }
-        */
     }
 
-    static long runAlgorithm()
+    static long[] runAlgorithm(bool print)
     {
         //virsuniu sarasas
         List<int> R = new List<int>();
@@ -117,13 +102,11 @@ class Clique
         //algoritmo laiko skaiciavimas
         var timer = new Stopwatch();
         timer.Start();
-        //algoritmas
-        //findCliques(R, P, X);
-        Console.WriteLine("Found cliques: " + findCliques(R, P, X));
+        long cliques = findCliques(R, P, X, print);
         timer.Stop();
-        //TimeSpan timeTaken = timer.Elapsed;
         var elapsedTime = timer.ElapsedMilliseconds;
-        return elapsedTime;
+        long[] returnArr = {cliques, elapsedTime};
+        return returnArr;
     }
 
     public static void Main(String[] args)
@@ -138,28 +121,33 @@ class Clique
             GraphGenerator gg = new GraphGenerator();
             gg.generateGraph();
             createMatrixFromFile();
-            Console.WriteLine("Algoritmas uztruko: " + runAlgorithm() + "ms");
+            long[] algorithmReturn = runAlgorithm(true);
+            Console.WriteLine("Found cliques: " + algorithmReturn[0]);
+            Console.WriteLine("Algoritmas uztruko: " + algorithmReturn[1] + "ms");
         }
         else if(sel == 2)
         {
             createMatrixFromFile();
-            Console.WriteLine("Algoritmas uztruko: " + runAlgorithm() + "ms");
+            long[] algorithmReturn = runAlgorithm(true);
+            Console.WriteLine("Found cliques: " + algorithmReturn[0]);
+            Console.WriteLine("Algoritmas uztruko: " + algorithmReturn[1] + "ms");
         }
         else if (sel == 3)
         {
-            for(int i = 1000; i <= 10000; i+= 1000)
+            for(int i = 1000; i <= 15000; i+= 1000)
             {
                 var times = new List<long>();
+                var cliques = new List<long>();
                 for(int j = 0; j < 10; ++j)
                 {
                     GraphGenerator gg = new GraphGenerator();
                     gg.generateGraph(i, 2 * i);
                     createMatrixFromFile();
-                    long elapsedTime = runAlgorithm();
-                    times.Add(elapsedTime);
-                    //Console.WriteLine(i + " algoritmas uztruko: " + elapsedTime + "ms");
+                    long[] algReturn = runAlgorithm(false);
+                    times.Add(algReturn[1]);
+                    cliques.Add(algReturn[0]);
                 }
-                Console.WriteLine("Su " + i + " virsunemis algoritmas vidutiniskai uztruko " + times.Average() + " ms");
+                Console.WriteLine("Su " + i + " virsunemis algoritmas vidutiniskai uztruko " + times.Average() + " ms ir rado " + Convert.ToInt32(cliques.Average()) + " kliku");
             }
         }
         
